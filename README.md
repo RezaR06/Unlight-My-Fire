@@ -4,7 +4,7 @@ A solar-powered wildfire early-detection sensor node, built around a custom 4-la
 
 Named after the Doors song, inverted — the point is to catch a fire before it starts.
 
-![Top view](images/UnlightMyFire_3D_PCB.png)
+![Top view](images/UnlightMyFire_3D_PCB_Image.png)
 
 ## The idea
 
