@@ -14,7 +14,7 @@ Radio — Seeed Wio-SX1262 (Semtech SX1262, +22 dBm, on-board TCXO), 915 MHz to 
 Power — Single-cell LiPo, 6 V solar, TI bq24074 charger with dynamic power path. MIC2295 boost for the SPS30 5 V rail at 1.2 MHz, chosen to 
 clear the AS3935's 482.5–517.5 kHz window.
 
-Rail partitioning — TPS22917 high-side load switches with default-off pull-downs; TS5A23166 analog switch isolates the SPS30 from I²C so it's electrically absent, not just unpowered, closing the back-powering sneak paths a rail-only switch leaves open.
+Rail partitioning — TPS22918 high-side load switches with default-off pull-downs; TS5A23166 analog switch isolates the SPS30 from I²C so it's electrically absent, not just unpowered, closing the back-powering sneak paths a rail-only switch leaves open.
 
 Instrumentation — INA228 20-bit current monitor on the system rail; MAX17048 fuel gauge for SOC.
 
