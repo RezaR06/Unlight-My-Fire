@@ -1,25 +1,32 @@
-# Unlight-My-Fire
-A battery-and-solar node that samples its environment on a duty cycle and transmits over LoRa when several independent signatures of combustion appear together.
+# Unlight My Fire
 
-Compute — Raspberry Pi Pico 2 (RP2350, A3/A4 stepping), castellated SMD module.
+A solar-powered wildfire early-detection sensor node, built around a custom 4-layer mixed-signal PCB. The board carries five environmental sensors, runs unattended in the field on solar and a single LiPo cell, and reports over LoRa to a live dashboard.
 
-Sensing — Sensirion SPS30 (particulate), SGP40 (VOC), SHT31 (humidity/temp), and a Panasonic AMG8833 8×8 thermal array on a shared I²C bus.
+Named after the Doors song, inverted — the point is to catch a fire before it starts.
 
-Lightning — ScioSense AS3935 on SPI with a 500 kHz LC tank, giving predictive ignition-risk warning ahead of combustion and triggering an elevated-sampling storm mode.
+![Top view](images/UnlightMyFire_3D_PCB.png)
 
-Fusion — On-device 0–100 confidence score against a rolling 24-hour baseline (PM2.5 40%, VOC 30%, thermal 20%, RH 10% inverse), gated on correlated anomalies across ≥2 modalities plus time persistence.
+## The idea
 
-Radio — Seeed Wio-SX1262 (Semtech SX1262, +22 dBm, on-board TCXO), 915 MHz to an external whip via u.FL pigtail. Shares SPI with the AS3935.
+Most wildfire detection happens after there's already a fire: satellite thermal imaging, camera networks, someone calling it in. This node is meant to sit in the woods and watch for the conditions and early signatures that precede ignition, then report them continuously rather than waiting for a plume big enough to see from orbit.
 
-Power — Single-cell LiPo, 6 V solar, TI bq24074 charger with dynamic power path. MIC2295 boost for the SPS30 5 V rail at 1.2 MHz, chosen to 
-clear the AS3935's 482.5–517.5 kHz window.
+Two constraints drove most of the design:
 
-Rail partitioning — TPS22918 high-side load switches with default-off pull-downs; TS5A23166 analog switch isolates the SPS30 from I²C so it's electrically absent, not just unpowered, closing the back-powering sneak paths a rail-only switch leaves open.
+1. **It has to run for months without anyone visiting it.** Average current draw is the whole ballgame — a node that needs a battery swap every three weeks is useless.
+2. **It has to sense several unrelated physical quantities at once**, which means a mixed-signal board with sensors that have very different power, timing, and noise requirements sharing one small PCB.
 
-Instrumentation — INA228 20-bit current monitor on the system rail; MAX17048 fuel gauge for SOC.
+## Sensing
 
-Board — 4-layer JLCPCB stackup (L1 signal, L2 solid ground, L3 power pours, L4 ground/overflow) in Altium Designer. Isolation by spatial partitioning, not plane splits.
+Five channels, chosen to cover both the conditions that make ignition likely and the signatures of combustion once it begins.
 
-Firmware — C++, brought up in stages: LoRa link, sensor integration, duty-cycle loop, fusion algorithm, packet assembly, power management, and fault hardening.
+| Channel | Part | What it's for |
+|---|---|---|
+| Particulate | SPS30 | Smoke detection — PM1.0 through PM10 mass concentration |
+| Lightning | AS3935 | Ignition risk before combustion; storm distance and energy |
+| Temperature | SHT31 | Ambient conditions and fire-weather context |
+| Humidity | SHT31 | Fuel moisture proxy; low RH plus high temp is the danger window |
+| VOC | *(see BOM)* | Volatile organics released by heated vegetation ahead of visible flame |
 
-Backend — Raspberry Pi gateway with LoRa HAT into InfluxDB, Telegraf, and Grafana for dashboards and alerting.
+Sensors sit on a shared I²C bus with the AS3935 and share the MCU with an SPI link. The SPS30 is the power hog of the group by a wide margin and is the reason the board has a switched rail at all — it needs 5 V and far more current than everything else combined, but only during a sample.
+
+Readings feed a confidence score rather than a single-sensor trip threshold, since no one channel is meaningful alone: a humidity reading means little by itself, but a multi-day drying trend plus a temperature spike
