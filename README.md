@@ -60,7 +60,7 @@ The boost converter switches at 1.2 MHz. That frequency wasn't chosen for effici
 - 4 layers, mixed-signal, Signal-Ground-Power-Signal
 - Designed in Altium, hierarchical schematic — one sheet per functional block
 
-[Full schematic (PDF)](unlight-my-fire-schematic.pdf)
+[Full schematic (PDF)](UnlightMyFire_Schematic.pdf)
 
 ## Firmware
 
