@@ -2,7 +2,7 @@
 
 A solar-powered wildfire early-detection sensor node, built around a custom 4-layer mixed-signal PCB. The board carries five environmental sensors, runs unattended in the field on solar and a single LiPo cell, and reports over LoRa to a live dashboard.
 
-Named after the Doors song, inverted — the point is to catch a fire before it starts.
+Named after the Doors song, yes.
 
 ![Top view](Images/UnlightMyFire_3D_PCB_Image.png)
 
