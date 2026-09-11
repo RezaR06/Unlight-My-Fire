@@ -1,8 +1,6 @@
 # Unlight My Fire
 
-A solar-powered wildfire early-detection sensor node, built around a custom 4-layer mixed-signal PCB. The board carries five environmental sensors, runs unattended in the field on solar and a single LiPo cell, and reports over LoRa to a live dashboard.
-
-Named after the Doors song, yes.
+A solar-powered wildfire early-detection sensor node, built around a custom 4-layer mixed-signal PCB. The board carries five environmental sensors, runs unattended in the field on solar and a single LiPo cell, and reports over LoRa to a live dashboard. (Named after the Doors song!)
 
 ![Top view](Images/UnlightMyFire_3D_PCB_Image.png)
 
